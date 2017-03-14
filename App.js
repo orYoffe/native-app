@@ -1,41 +1,31 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
-import MapView from 'react-native-maps'
+import { StyleSheet, Text, View, TouchableHighlight, Dimensions } from 'react-native'
+import Map from './components/Map'
 
 export default class App extends Component {
   state = {
     shouldShowMaps: false,
   }
-  onPressButton = () => {
-    console.log("You tapped the button!")
-    this.setState({ shouldShowMaps: true })
+
+  toggleMaps = () => {
+    console.log('button clicked');
+    this.setState({ shouldShowMaps: !this.state.shouldShowMaps })
   }
 
   render() {
     const { shouldShowMaps } = this.state
-    console.log(shouldShowMaps)
+    if (shouldShowMaps) {
+      return <Map returnBack={this.toggleMaps} />
+    }
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-          <Button
+        <Text style={styles.text}>Open up App.js to start working on your app!</Text>
+        <Text style={styles.text}>Changes you make will automatically reload.</Text>
+          <TouchableHighlight
             style={styles.button}
-            onPress={this.onPressButton}
-            title="Open maps"
+            onPress={this.toggleMaps}
             accessibilityLabel="Learn more about this purple button"
-          />
-        {shouldShowMaps && (
-          <MapView
-           style={styles.map}
-           region={{
-             latitude: 52.5166667,
-             longitude: 13.4,
-             latitudeDelta: 0.015,
-             longitudeDelta: 0.0121,
-           }}
-         >
-         </MapView>
-        )}
+          ><Text style={styles.colorWhite}>Open maps</Text></TouchableHighlight>
       </View>
     )
   }
@@ -43,18 +33,22 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 40,
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    height: Dimensions.get('window').width * 0.5,
+  },
+  colorWhite: {
+    color: '#ffffff',
   },
   button: {
     flex: 2,
     backgroundColor: '#841584',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: 40,
   },
-   map: {
-     ...StyleSheet.absoluteFillObject,
-   },
+  text: {
+    flex: 1,
+  }
 })
